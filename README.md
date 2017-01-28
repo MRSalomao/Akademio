@@ -1,12 +1,14 @@
 ## Getting Started
 
-Install *yarn* using your favorite package manager.
+Install **yarn** using your favorite package manager.
+
+Once it's ready, navigate to the root of the project folder and install the project's dependencies by running:
 
 ```sh
 $ yarn install
 ```
 
-Start the local dev server:
+After that, you can execute your local development server by running:
 
 ```sh
 $ yarn run server
@@ -16,12 +18,15 @@ Navigate to **http://localhost:8080/** to view the app.
 
 ## Deploying
 
+To make the project go live, enter the following commands:
+
 ```sh
 $ yarn add firebase-tools
 $ yarn run build
 $ firebase-tools deploy
 ```
-production using the [production](http://webpack.github.io/docs/cli.html#production-shortcut-p) shortcut.
+
+This should be done very carefully, once we start having real users.
 
 ## Testing
 
