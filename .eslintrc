@@ -1,0 +1,19 @@
+{
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "rules": {
+        "semi": 2
+    },
+    "plugins": [
+        "react"
+    ],
+    "compilerOptions": {
+        "target": "ES6",
+        "module": "commonjs"
+    }
+}
