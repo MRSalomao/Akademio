@@ -1,16 +1,7 @@
 import React from "react";
-import styles from "./style.css";
+import "./style.sass";
 
-import firebase from 'firebase';
-import "firebase/auth";
-import "firebase/database";
-
-import { provider } from '../../common/components/App.js';
-
-const db = firebase.database();
-const auth = firebase.auth();
-
-
+import { db, storage, user, fbNow } from '../../common/components/firebase';
 
 const POINT_EVENT = 0;
 const LINE_EVENT = 1;
@@ -28,20 +19,6 @@ export default class HomePage extends React.Component {
       playing: false,
       lastFrame: 0
     };
-
-    var userLoggedIn = false;
-    
-    if (auth.currentUser != null) {
-      auth.signInWithPopup(provider).then(function(result) {
-        var token = result.credential.accessToken;
-        var user = result.user;
-      }).catch(function(error) {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        var email = error.email;
-        var credential = error.credential;
-      });
-    }
 
     this.draw.bind(this);
   }
@@ -95,8 +72,8 @@ export default class HomePage extends React.Component {
     const ctx = canvas.getContext('2d');
 
     const t = Date.now() - this.state.recordStartTime;
-    const x = e.pageX - canvasRect.left;
-    const y = e.pageY - canvasRect.top;
+    const x = e.clientX - canvasRect.left;
+    const y = e.clientY - canvasRect.top;
 
     if (mouseDown) {
       ctx.lineWidth = 2;
@@ -187,10 +164,21 @@ export default class HomePage extends React.Component {
   }
 
   saveVideo() {
-    db.ref('/videos/' + "test").set({
-      author: auth.currentUser.uid,
-      videoTrack: this.state.videoTrack,
+    const videoId = db.ref('/videos').push().key;
+
+    db.ref(`/videos/${videoId}`).set({
+      author: user.uid,
+      description: "This is some test description",
+      tags: false,
+      views: 0,
+      nVideoTracks: 1,
+      avgRating: 1.0,
+      nLikes: 0,
+      created: fbNow,
+      updated: fbNow,
     });
+
+    storage.ref(`${user.uid}/videos/${videoId}/videoTrack1`).putString(JSON.stringify(this.state.videoTrack));
   }
     
   loadVideo() {
@@ -202,7 +190,7 @@ export default class HomePage extends React.Component {
 
   render() {
     return (
-      <div className={styles.content}>
+      <div className="content">
         <h1> Video Name </h1>
         <button onClick={this.saveVideo.bind(this)}> Save </button>
         <button onClick={this.loadVideo.bind(this)}> Load </button>
@@ -224,7 +212,7 @@ export default class HomePage extends React.Component {
           <button onClick={this.startPlaying.bind(this)}> Play </button>
         )}
 
-        <p className={styles.welcomeText}>Video Description</p>
+        <p className="welcomeText">Video Description</p>
       </div>
     );
   }

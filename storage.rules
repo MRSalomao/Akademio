@@ -1,0 +1,20 @@
+service firebase.storage {
+  match /b/liberaakademio.appspot.com/o {
+    match /{user} {
+      match /videos/{video} {
+        match /{allVideos=**} {
+          allow read;
+        }
+        match /videoTrack1 {
+          allow write: if request.auth.uid == user;
+        }
+        match /audioTrack {
+          allow write: if request.auth.uid == user || auth.uid === 'server';
+        }
+        match /thumbnail {
+          allow write: if request.auth.uid == user;
+        }
+      }
+    }
+  }
+}

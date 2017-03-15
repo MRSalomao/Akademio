@@ -1,20 +1,18 @@
 import React from 'react';
-import firebase from 'firebase';
 
-firebase.initializeApp({
-    apiKey: "AIzaSyClXrgEiEtjNPx2E4Yw9OTfpUqY7UxIfVM",
-    authDomain: "liberaakademio.firebaseapp.com",
-    databaseURL: "https://liberaakademio.firebaseio.com",
-    storageBucket: "liberaakademio.appspot.com",
-    messagingSenderId: "416448429310"
-});
+import "common/base.sass";
 
-export const provider = new firebase.auth.GoogleAuthProvider();
+import Navbar from './Navbar';
+import Footer from './Footer';
 
 export default ({children}) => {
   return (
-    <div id="container">
-      {children}
+    <div className="app">
+      <Navbar />
+      <div className="content">
+        {children}
+      </div>
+      <Footer />
     </div>
   );
 };

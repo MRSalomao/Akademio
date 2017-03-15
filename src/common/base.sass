@@ -1,0 +1,186 @@
+// cfe8ef-c6dbf0-aed1e6-a0c4e2-85c7de
+// 223843-eff1f3-dbd3d8-d8b4a0-d77a61
+// f06449-ede6e3-dadad9-36382e-5bc3eb
+// e8c547-30323d-4d5061-5c80bc-cdd1c4
+// 5c9ead-ffffff-326273-eeeeee-e39774
+// 1c1c1c-d3d0cb-f3b61f-e7e5df-fafaff
+// 1c1c1c-eab148-f3b61f-eda14b-fafaff
+
+$oldgold: #CCA43B
+$tuna: #30323D
+$mercury: #E5E5E5
+$white: #FFFFFF
+$celeste: #CDD1C4
+
+$color1: rgba(28, 28, 28, 1)
+$color2: #20A4F3
+$color3: rgba(243, 182, 31, 1)
+$color4: rgba(237, 161, 75, 1)
+$color5: #F2F1ED
+
+$hoverAlpha: 0.85
+$pressedAlpha: 0.70
+
+::-webkit-scrollbar
+  display: none
+
+body 
+  margin: 0
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif
+  background-color: $color5
+
+canvas
+  display: inline
+  background-color: #ffffff
+
+.app 
+  display: flex
+  min-height: 100vh
+  flex-direction: column
+
+.content
+  flex: 1
+
+.navbar 
+  display: flex
+  flex-direction: row
+  align-items: center
+  flex-wrap: nowrap
+  justify-content: space-between
+  background-color: transparent
+  margin-top: 2px
+  height: 40px
+
+.footer
+  background-color: $color1
+
+.logo
+  color: $color1
+  text-decoration: none
+  margin: 0px 15px 0px 15px
+  font-size: 19px
+  &:focus
+    outline: none
+  &:hover
+    opacity: $hoverAlpha
+  &:active
+    opacity: $pressedAlpha
+
+.searchForm
+  flex-grow: 0.7
+  display: flex
+  flex-direction: row
+  align-items: center
+
+.search 
+  $p: 6.5px
+  flex-grow: 1
+  border: 0px solid $color1
+  border-radius: 8px
+  font-size: 12px
+  height: 16px
+  border: 1px solid #ddd
+  padding: $p ($p + 30px) $p ($p + 4px)
+  &:hover
+    border: 1px solid #ccc
+    padding: $p ($p + 30px) $p ($p + 4px)
+  &:focus
+    outline: none
+    border: 1px solid $color2
+    padding: $p ($p + 30px) $p ($p + 4px)
+
+.userBox
+  color: $color1
+  // margin: 0px 15px 0px 15px
+  display: flex
+  flex-direction: row
+  align-items: center
+  flex-wrap: nowrap
+
+
+
+.iconButton
+  $imSize: 32px
+  background-color: transparent
+  border: 0px
+  width: 50px
+  height: 50px
+  margin: 0px 15px 0px 0px
+  outline: none
+  position: relative
+  display: inline-block
+  svg
+    width: 24px
+    height: 24px
+    color: #555
+  img 
+    width: $imSize
+    height: $imSize
+    border-radius: 50%
+  &:hover
+    opacity: $hoverAlpha
+    .tooltip
+      visibility: visible
+  &:active>svg
+    opacity: $pressedAlpha
+    // svg
+    //   stroke: $color2
+    // img
+    //   border: 1px solid $color2
+    //   margin: -1px
+  .tooltip
+    visibility: hidden
+    width: 64px
+    background-color: black
+    opacity: 0.8
+    color: #fff
+    text-align: center
+    border-radius: 6px
+    padding: 8px 0px
+    position: absolute
+    z-index: 1
+    top: 95%
+    left: 50%
+    margin-left: -32px
+    &::after
+      content: ""
+      position: absolute
+      bottom: 100%
+      left: 50%
+      margin-left: -5px
+      border-width: 5px
+      border-style: solid
+      border-color: transparent transparent black transparent
+    
+.searchButton
+  @extend .iconButton
+  left: -35px
+  width: 30px
+  height: 30px
+  svg
+    width: 16px
+    height: 16px
+    color: #777   
+
+//  .searchButton
+//   @extend .iconButton
+//   left: -1px
+//   z-index: -1
+//   width: 40px
+//   border: 0px solid $color1
+//   border-radius: 0px 8px 8px 0px
+//   height: 29.5px
+//   border: 1px solid #ddd
+//   background-color: #eee
+//   &:hover
+//     border: 1px solid #ddd
+//     svg
+//       color:#111
+//   &:focus
+//     outline: none
+//     border: 1px solid $color2
+//   svg
+//     margin-right: 1px
+//     width: 17px
+//     height: 17px
+//     color: #777   

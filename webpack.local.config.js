@@ -1,23 +1,20 @@
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const path = require('path');
 
-/**
- * This is the Webpack configuration file for local development. It contains
- * local-specific configuration such as the React Hot Loader, as well as:
- *
- * - The entry point of the application
- * - Where the output file should be
- * - Which loaders to use on what files to properly transpile the source
- *
- * For more information, see: http://webpack.github.io/docs/configuration.html
- */
+// const sassLoaders = [
+//   'css-loader',
+//   'postcss-loader',
+//   'sass-loader?indentedSyntax=sass&includePaths[]=' + path.resolve(__dirname, './src')
+// ];
+
 module.exports = {
 
   // Efficiently evaluate modules with source maps
   devtool: "eval",
 
   // Set entry point to ./src/main and include necessary files for hot load
-  entry:  [
+  entry: [
     "webpack-dev-server/client?http://localhost:9090",
     "webpack/hot/only-dev-server",
     "./src/main"
@@ -35,26 +32,25 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
-    new ExtractTextPlugin('style.css', { allChunks: true })
   ],
+
+  // sassLoader: {
+  //   includePaths: ['src']
+  // },
 
   // Transform source code using Babel and React Hot Loader
   module: {
     loaders: [
       { test: /\.jsx?$/, exclude: /node_modules/, loaders: ["react-hot", "babel-loader"] },
-      { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader') }
+      { test: /react-icons\/(.)*(.js)$/, loader: 'babel-loader', query: {presets: ['es2015', 'react']} },
+      { test: /\.sass$/, loaders: ['style', 'css', 'sass'] }
+      // { test: /\.sass$/, loaders: ['style', 'css', 'sass'], include: path.join(__dirname, 'src') }
     ]
   },
 
   // Automatically transform files with these extensions
   resolve: {
-    extensions: ['', '.js', '.jsx', '.css']
-  },
-
-  // Additional plugins for CSS post processing using postcss-loader
-  postcss: [
-    require('autoprefixer'), // Automatically include vendor prefixes
-    require('postcss-nested') // Enable nested rules, like in Sass
-  ]
-
-}
+    root: path.resolve('./src'),
+    extensions: ['', '.js', '.jsx', '.sass']
+  }
+};

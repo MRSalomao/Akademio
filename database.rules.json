@@ -1,6 +1,173 @@
+// For more information and a diagram, see:
+// https://docs.google.com/drawings/d/111fb2pjACXyo5JjEzYmT9DIUA51ji_9JHdgiJN4yikY/edit
 {
   "rules": {
-    ".read": "true",
-    ".write": "auth != null"
+
+    "users": {
+      "$user": {
+        ".read": "auth.uid == $user",
+        ".write": "auth.uid == $user",
+        ".validate": "newData.hasChildren(['name', 'email', 'picture', 'about', 'created', 'updated'])",
+        "name": {
+          ".validate": "newData.isString() && newData.val().length < 128"
+        },
+        "email": {
+          ".validate": "newData.isString() && newData.val().length < 128 && newData.val().contains('@')"
+        },
+        "about": {
+          ".validate": "newData.isString() && newData.val().length < 1024"
+        },
+        "picture": {
+          ".validate": "newData.isString() && newData.val().length < 256"
+        },
+        "created": {
+          ".validate": "newData.val() == now"
+        },
+        "updated": {
+          ".validate": "newData.val() == now"
+        },
+        "$other": { ".validate": false }
+      }
+    },
+
+    "videos": {
+      ".read": true,
+      "$video": {
+        ".write": "!data.exists() && newData.child('author').val() === auth.uid || data.exists() && data.child('author').val() === auth.uid",
+        ".validate": "newData.hasChildren(['author', 'description', 'tags', 'views', 'nVideoTracks', 'avgRating', 'nLikes', 'created', 'updated'])", 
+        "author": {
+          ".validate": "root.child('users/'+newData.val()).exists()"
+        },
+        "description": {
+          ".validate": "newData.isString() && newData.val().length < 1024"
+        },
+        "nVideoTracks": {
+          ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 4"
+        },
+        "created": {
+          ".validate": "newData.val() == now"
+        },
+        "updated": {
+          ".validate": "newData.val() == now"
+        }
+      }
+    },
+
+    // worth denormalizing videos into this?
+    "userVideos": {
+      ".read": true,
+      "$user": {
+        ".write": "auth.uid === $user",
+        "$video": {
+          ".validate": "root.child('videos/'+$video).exists()"
+        }
+      }
+    },
+
+    "userRatings": {
+      "$user": {
+        ".read": "auth.uid === $user",
+        ".write": "auth.uid === $user",
+        "updated": {
+          ".validate": "newData.val() == now" // last time this user rated something. "created" is the same as in the corresponding user object.
+        },
+        "ratings": {
+          "$rating": {
+            ".validate": "root.child('videos/'+$rating).exists() && newData.hasChildren(['value', 'created'])",
+            "value": {
+              ".validate": "newData.isNumber()"
+            },
+            "created": {
+              ".validate": "newData.val() == now"
+            }
+          }
+        }
+      }
+    },
+
+    "userViews": {
+      "$user": {
+        ".read": "auth.uid === $user",
+        ".write": "auth.uid === $user",
+        "updated": {
+          ".validate": "newData.val() == now"
+        },
+        "views": {
+          "$view": {
+            ".validate": "root.child('videos/'+$view).exists()",
+            "created": {
+              ".validate": "newData.val() == now"
+            }
+          }
+        }
+      }
+    },
+
+    "userFavorites": {
+      "$user": {
+        ".read": "auth.uid === $user",
+        ".write": "auth.uid === $user",
+        "updated": {
+          ".validate": "newData.val() == now"
+        },
+        "videos": {
+          "$video": {
+            ".validate": "root.child('videos/'+$video).exists()",
+            "created": {
+              ".validate": "newData.val() == now"
+            }
+          }
+        }
+      }
+    },
+
+    "playlists": {
+      ".read": true,
+      "$playlist": {
+        ".validate": "newData.hasChildren(['title', 'description', 'tags', 'author', 'videos', 'created', 'updated'])",
+        "author": {
+          ".validate": "root.child('users/'+newData.val()).exists()"
+        },
+        ".indexOn": [
+          "author"
+        ],
+        "videos": {
+          "$video": {
+            ".validate": "root.child('videos/'+$video).exists() && newData.hasChildren(['order'])",
+            "order": {
+              ".validate": "newData.isNumber()"
+            }
+          }
+        },
+        "created": {
+          ".validate": "newData.val() == now"
+        },
+        "updated": {
+          ".validate": "newData.val() == now"
+        }
+      }
+    },
+
+    "videoComments": {
+      ".read": true,
+      "$video": {
+        "$comment": {
+          ".write": "!data.exists() && auth.uid === newData.child('author').val() || data.exists() && auth.uid === data.child('author').val()",
+          ".validate": "newData.hasChildren(['author', 'content', 'created', 'updated'])",
+          "author": {
+            ".validate": "root.child('users/'+newData.val()).exists()"
+          },
+          "content": {
+            ".validate": "newData.val().length < 1024"
+          },
+          "created": {
+            ".validate": "newData.val() == now"
+          },
+          "updated": {
+            ".validate": "newData.val() == now"
+          }
+        }
+      }
+    }
   }
 }

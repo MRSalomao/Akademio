@@ -1,13 +1,14 @@
 {
-  "name": "Essential React",
-  "description": "A minimal skeleton for building testable React apps using Babel",
+  "name": "Libera Akademio",
+  "description": "A free and open tool to create and share educational videos",
   "keywords": [
-    "react",
-    "babel",
-    "starter"
+    "authoring tool",
+    "video editor",
+    "video player",
+    "edtech"
   ],
-  "repository": "https://github.com/pheuter/essential-react",
-  "logo": "https://dl.dropboxusercontent.com/u/1803181/essential-react-logo.png",
+  "repository": "https://github.com/MRSalomao/Akademio",
+  "logo": "TODO",
   "env": {
     "PRODUCTION": "true",
     "NPM_CONFIG_PRODUCTION": "false"

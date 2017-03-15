@@ -16,6 +16,12 @@ $ yarn run server
 
 Navigate to **http://localhost:8080/** to view the app.
 
+## Testing
+
+```sh
+$ yarn test
+```
+
 ## Deploying
 
 To make the project go live, enter the following commands:
@@ -27,9 +33,3 @@ $ firebase-tools deploy
 ```
 
 This should be done very carefully, once we start having real users.
-
-## Testing
-
-```sh
-$ yarn test
-```
